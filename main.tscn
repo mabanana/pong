@@ -1,0 +1,176 @@
+[gd_scene load_steps=11 format=3 uid="uid://bx23lbvue6oci"]
+
+[ext_resource type="Script" uid="uid://piu3nxv11v7h" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://vokjhxkw45ql" path="res://end_zone.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://ciefvjuqruf2r" path="res://camera_controller.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://bqd3l74j5v7x2" path="res://hud_controller.gd" id="3_h2yge"]
+
+[sub_resource type="Environment" id="Environment_7dm0k"]
+background_mode = 3
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+glow_intensity = 3.02
+glow_bloom = 0.91
+adjustment_enabled = true
+adjustment_brightness = 0.33
+adjustment_contrast = 4.28
+adjustment_saturation = 0.41
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xm2m"]
+size = Vector2(50, 1000)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bvp3"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_lquwl"]
+font_size = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_7mycd"]
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_272bh"]
+font_size = 80
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("endzone_1", "endzone_2", "hud", "camera")]
+script = ExtResource("1_0xm2m")
+endzone_1 = NodePath("Endzone1")
+endzone_2 = NodePath("Endzone2")
+hud = NodePath("CanvasLayer/MarginContainer/HUD")
+camera = NodePath("Camera2D")
+player_x_offset = 100
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7dm0k")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="WorldEnvironment"]
+position = Vector2(58, 267)
+energy = 13.25
+shadow_enabled = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+script = ExtResource("2_1bvp3")
+
+[node name="Endzone1" type="Area2D" parent="."]
+script = ExtResource("2_0xm2m")
+metadata/_custom_type_script = "uid://vokjhxkw45ql"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Endzone1"]
+position = Vector2(50, 324)
+shape = SubResource("RectangleShape2D_0xm2m")
+debug_color = Color(0, 0.6, 0.701961, 0.196078)
+
+[node name="Endzone2" type="Area2D" parent="."]
+script = ExtResource("2_0xm2m")
+metadata/_custom_type_script = "uid://vokjhxkw45ql"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Endzone2"]
+position = Vector2(1102, 324)
+shape = SubResource("RectangleShape2D_0xm2m")
+debug_color = Color(0, 0.6, 0.701961, 0.196078)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="HUD" type="Control" parent="CanvasLayer/MarginContainer" node_paths=PackedStringArray("p1_label", "p2_label", "win_message", "canvas_layer")]
+layout_mode = 2
+script = ExtResource("3_h2yge")
+p1_label = NodePath("HboxContainer/Label2")
+p2_label = NodePath("HboxContainer2/Label2")
+win_message = NodePath("Control/WinMessage")
+canvas_layer = NodePath("../..")
+
+[node name="HboxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HUD"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+offset_right = 65.0
+offset_bottom = 50.0
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HUD/HboxContainer"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/HUD/HboxContainer"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_1bvp3")
+
+[node name="HboxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HUD"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -65.0
+offset_bottom = 23.0
+grow_horizontal = 0
+
+[node name="Label2" type="Label" parent="CanvasLayer/MarginContainer/HUD/HboxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "0"
+label_settings = SubResource("LabelSettings_lquwl")
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/HUD/HboxContainer2"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinMessage" type="Label" parent="CanvasLayer/MarginContainer/HUD/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -34.5
+offset_right = 86.0
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "SCORE!"
+label_settings = SubResource("LabelSettings_7mycd")
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Left Player : W,S
+Right Player : Up, Down"
+label_settings = SubResource("LabelSettings_272bh")
+horizontal_alignment = 1

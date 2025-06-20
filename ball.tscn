@@ -1,0 +1,128 @@
+[gd_scene load_steps=10 format=3 uid="uid://ci5vcltt3t4yh"]
+
+[ext_resource type="Script" uid="uid://t3540ic84gk7" path="res://ball.gd" id="1_x8fbi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_41u45"]
+radius = 20.0
+
+[sub_resource type="Shader" id="Shader_ktgx5"]
+code = "shader_type canvas_item;
+
+uniform vec4 color: source_color;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+	// UV coordinates range from 0.0 to 1.0
+    vec2 center = vec2(0.5, 0.5);
+
+    // Compute the distance from the current pixel to the center
+    float dist = distance(UV, center);
+    float transparency = normalize(0.5 - dist);
+    COLOR.a = COLOR.a * transparency;
+	COLOR.rgb = color.rgb - dist;
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hgol0"]
+shader = SubResource("Shader_ktgx5")
+shader_parameter/color = Color(0.262745, 0.419608, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x8fbi"]
+radius = 30.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x8fbi"]
+particle_flag_disable_z = true
+angle_min = -223.4
+angle_max = 149.0
+inherit_velocity_ratio = -0.1
+spread = 71.024
+flatness = 0.25
+angular_velocity_min = 8.27998
+angular_velocity_max = 471.73
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -5.15
+linear_accel_max = 44.82
+radial_accel_min = -40.22
+radial_accel_max = -4.6
+tangential_accel_min = -47.12
+tangential_accel_max = -11.49
+scale_min = 8.0
+scale_max = 20.0
+scale_over_velocity_min = 568.97
+scale_over_velocity_max = 827.59
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.12
+
+[sub_resource type="Gradient" id="Gradient_x8fbi"]
+colors = PackedColorArray(0.03572, 0.0047, 0.47, 0.407843, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_41u45"]
+gradient = SubResource("Gradient_x8fbi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ktgx5"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_max = 218.39
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = 59.77
+scale_min = 8.0
+scale_max = 20.0
+color_ramp = SubResource("GradientTexture1D_41u45")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.03
+
+[node name="Ball" type="RigidBody2D" node_paths=PackedStringArray("particle", "ready_particle")]
+gravity_scale = 0.0
+script = ExtResource("1_x8fbi")
+particle = NodePath("GPUParticles2D")
+ready_particle = NodePath("GPUParticles2D2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_41u45")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_hgol0")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_x8fbi")
+debug_color = Color(0.862845, 0.199928, 0.736307, 0.42)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, -1)
+emitting = false
+amount = 17
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.1
+randomness = 0.47
+process_material = SubResource("ParticleProcessMaterial_x8fbi")
+
+[node name="GPUParticles2D2" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_ktgx5")
