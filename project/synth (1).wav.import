@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://fcrtduxtysli"
+path="res://.godot/imported/synth (1).wav-ccf2c133dc854ff469d7b64fcd4a36b1.sample"
+
+[deps]
+
+source_file="res://synth (1).wav"
+dest_files=["res://.godot/imported/synth (1).wav-ccf2c133dc854ff469d7b64fcd4a36b1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

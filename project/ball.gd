@@ -17,9 +17,12 @@ func _physics_process(delta):
 	if position.y + 50 > screen_size.y:
 		dir.y = -1
 		apply_central_impulse(Vector2.UP * speed)
+		$AudioStreamPlayer3.play()
+		
 	elif position.y - 50 < 0:
 		dir.y = 1
 		apply_central_impulse(Vector2.DOWN * speed)
+		$AudioStreamPlayer3.play()
 		
 	apply_force(dir * speed)
 
@@ -31,5 +34,5 @@ func flip_x(body):
 		apply_central_impulse(Vector2(0, body.velocity.y) / 2)
 		particle.restart()
 		particle.emitting = true
-		print("boop")
 		paddle_hit.emit(1)
+		$AudioStreamPlayer3.play()

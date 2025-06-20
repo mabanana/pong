@@ -18,6 +18,9 @@ signal paddle_hit
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	$CanvasLayer/HBoxContainer/HSlider.value_changed.connect(func(value):
+		AudioServer.set_bus_volume_db(0, clampf(value, -32, 0))
+	)
 	await get_tree().create_timer(3).timeout
 	$CanvasLayer/Label.hide()
 	_spawn_players()
@@ -27,8 +30,7 @@ func _ready():
 	hud.scene = self
 	
 	paddle_hit.connect(camera.start_camera_shake)
-	paddle_hit.connect(hud.start_camera_shake)
-	
+	paddle_hit.connect(hud.start_camera_shake)	
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -67,6 +69,8 @@ func _on_body_entered(body, id):
 		score[2-id] += 1
 		ball.queue_free()
 		hud.show_message(2-id)
+		$AudioStreamPlayer5.play()
 		await get_tree().create_timer(1).timeout
+		$AudioStreamPlayer4.play()
 		hud._update()
 		get_tree().create_timer(3).timeout.connect(_spawn_ball)
