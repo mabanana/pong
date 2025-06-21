@@ -22,6 +22,8 @@ func _ready():
 		AudioServer.set_bus_volume_db(0, clampf(value, -32, 0))
 	)
 	await get_tree().create_timer(3).timeout
+	$AudioStreamPlayer.play()
+	$AudioStreamPlayer.finished.connect($AudioStreamPlayer.play)
 	$CanvasLayer/Label.hide()
 	_spawn_players()
 	_spawn_ball()
@@ -56,7 +58,7 @@ func _spawn_ball():
 	ball = load("res://ball.tscn").instantiate()
 	ball.position = screen_size/2
 	ball.screen_size = screen_size
-	ball.dir = Vector2(1, randf() / 2).normalized()
+	ball.dir = Vector2(1, randf() / 2).normalized() * (2 * randi_range(0,1) - 1)
 	ball.paddle_hit = paddle_hit
 	add_child(ball)
 	

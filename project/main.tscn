@@ -201,7 +201,6 @@ max_value = 0.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_7mycd")
-autoplay = true
 
 [node name="AudioStreamPlayer4" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_272bh")
